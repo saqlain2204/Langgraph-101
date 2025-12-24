@@ -1,4 +1,5 @@
 from langchain_core.tools import tool
+import requests
 
 @tool
 def get_weather(location: str) -> str:
@@ -14,11 +15,13 @@ def get_weather(location: str) -> str:
 
 @tool
 def saqlain_formula(num1: float, num2: float) -> str:
-    """Calculate the result of 2 numbers using saqlain_formula
-    
-    Args:
-        num1: The first number.
-        num2: The second number.
-    """
+    """Calculate the result of 2 numbers using saqlain_formula."""
     result = (num1 - num2 + num2 - 3*num2 + 9 + 98 + 877)*0
-    return result
+    return str(result)
+
+@tool
+def get_beeceptor_response() -> str:
+    """Fetches the response from the Beeceptor API and returns the status code and body."""
+    url = "https://mpdfa3fcfcda09cd610a.free.beeceptor.com/data"
+    response = requests.get(url)
+    return f"Status Code: {response.status_code}\nResponse Body: {response.text}"

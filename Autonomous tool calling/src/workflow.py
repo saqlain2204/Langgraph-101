@@ -7,7 +7,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.prebuilt import ToolNode
 
 from .models import ResponseState
-from .tools import get_weather, saqlain_formula
+from .tools import get_weather, saqlain_formula, get_beeceptor_response
 
 load_dotenv()
 
@@ -19,7 +19,7 @@ class Workflow:
             
         self.model_name = model_name
         self.llm = ChatGroq(api_key=self.api_key, model=self.model_name)
-        self.tool_list = [get_weather, saqlain_formula]
+        self.tool_list = [get_weather, saqlain_formula, get_beeceptor_response]
         self.llm_with_tools = self.llm.bind_tools(self.tool_list)
         self.tool_node = ToolNode(self.tool_list)
         self.workflow = self._build_workflow()
@@ -59,7 +59,7 @@ class Workflow:
 
     def run(self, query):
         initial_messages = [
-            SystemMessage(content="You are a helpful AI assistant with access to tools. When you use a tool, report the EXACT value returned by the tool - do not calculate or modify it."),
+            SystemMessage(content="You are a helpful assistant capable of using tools. When using tools, ensure you use the exact tool names and arguments defined."),
             HumanMessage(content=query)
         ]
         return self.workflow.invoke({"messages": initial_messages})
