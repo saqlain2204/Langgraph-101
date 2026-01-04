@@ -4,6 +4,8 @@ from langchain_core.tools import tool
 from langchain.agents import create_agent
 from langchain_groq import ChatGroq
 
+# This is just a template with langchain.
+
 load_dotenv()
 
 model = ChatGroq(model="llama-3.3-70b-versatile")
